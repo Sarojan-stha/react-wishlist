@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { v4 as uuid } from "uuid";
 
-function App() {
+export default function WishList() {
+  const [todo, setTodo] = useState();
+  const [todoList, setTodoList] = useState([]);
+
+  function onChangeInput(event) {
+    const value = event.target.value;
+    setTodo(value);
+  }
+
+  function addTodo() {
+    setTodoList([...todoList, { id: uuid(), todo: todo }]);
+    setTodo("");
+  }
+
+  function deleteTodo(id) {
+    const filteredList = todoList.filter((todo) => todo.id !== id);
+    setTodoList(filteredList);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        value={todo}
+        onChange={onChangeInput}
+        placeholder="Enter your wish"
+      />
+      <button onClick={addTodo}>Add</button>
+      <div>
+        {todoList.length > 0 &&
+          todoList.map((todo) => (
+            <div key={todo.id}>
+              <label>
+                <input type="checkbox" />
+                <span>{todo.todo}</span>
+                <button onClick={() => deleteTodo(todo.id)}>Remove</button>
+                <br />
+              </label>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
-
-export default App;
