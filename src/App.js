@@ -29,17 +29,18 @@ export default function WishList() {
   }
 
   return (
-    <div>
+    <div className="container">
+      <h1>Todo Lists</h1>
       <input
         value={todo}
         onChange={onChangeInput}
-        placeholder="Enter your wish"
+        placeholder="Enter your todos"
       />
       <button onClick={addTodo}>Add</button>
-      <div>
+      <div className="todolist">
         {todoList.length > 0 &&
           todoList.map((todo) => (
-            <div key={todo.id}>
+            <div className="todo" key={todo.id}>
               <label>
                 <input
                   onChange={() => todoCheckChange(todo.id)}
