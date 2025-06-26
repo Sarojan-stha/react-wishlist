@@ -1,3 +1,4 @@
+import "./App.css";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
@@ -11,7 +12,7 @@ export default function WishList() {
   }
 
   function addTodo() {
-    setTodoList([...todoList, { id: uuid(), todo: todo }]);
+    setTodoList([...todoList, { id: uuid(), todo: todo, isCompleted: false }]);
     setTodo("");
   }
 
@@ -19,6 +20,14 @@ export default function WishList() {
     const filteredList = todoList.filter((todo) => todo.id !== id);
     setTodoList(filteredList);
   }
+
+  function todoCheckChange(id) {
+    const updatedTodoList = todoList.map((todo) =>
+      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+    );
+    setTodoList(updatedTodoList);
+  }
+
   return (
     <div>
       <input
@@ -32,8 +41,13 @@ export default function WishList() {
           todoList.map((todo) => (
             <div key={todo.id}>
               <label>
-                <input type="checkbox" />
-                <span>{todo.todo}</span>
+                <input
+                  onChange={() => todoCheckChange(todo.id)}
+                  type="checkbox"
+                />
+                <span className={todo.isCompleted ? "strike-through" : ""}>
+                  {todo.todo}
+                </span>
                 <button onClick={() => deleteTodo(todo.id)}>Remove</button>
                 <br />
               </label>
